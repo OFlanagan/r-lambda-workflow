@@ -8,7 +8,7 @@ import library.instance_handling as instance
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("-r", "--r-version", action="store", default="3.5.1",
+parser.add_argument("-r", "--r-version", action="store", default="3.6.2",
                   dest="r_version", help="R version (default: %(default)s)")
 parser.add_argument("-k", "--key-path", action="store", dest="key_path",
                   help="Path to the AWS key", required=True)
@@ -19,7 +19,7 @@ parser.add_argument("-a", "--action", action="store", dest="action",
 parser.add_argument("-t", "--terminate", action="store", dest="terminate",
                   default=True, help="terminate instance (default: %(default)s)")
 parser.add_argument("-i", "--instance-type", action="store", dest="instance_type",
-                  default="t2.micro",
+                  default="t2.small",
                   help="instance type [default: %(default)s]")
 parser.add_argument("-n", "--name-ami", action="store", dest="ami_name", help="name of the created AMI image (required only if --action=create_ami)")
 
@@ -35,7 +35,7 @@ if arguments.action == "create_ami":
         exit(-1)
 
 
-ami_id = os.popen("aws ec2 describe-images --filters 'Name=name,Values=amzn-ami-hvm-2017.03.1.20170812-x86_64-gp2' --query 'Images[0].ImageId'").read().strip()
+ami_id = os.popen("aws ec2 describe-images --filters 'Name=name,Values=Ubuntu Server 18.04 LTS (HVM), SSD Volume Type' --query 'Images[0].ImageId'").read().strip()
 
 print("Instance setup")
 my_server_ip, my_server_id = instance.setup_instance(ami_id, arguments.instance_type, key_name)
